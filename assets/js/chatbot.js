@@ -204,9 +204,14 @@
     }
 
     function addMessage(role, content) {
+        // Safety: ensure content is a string
+        if (typeof content === 'object' && content !== null) {
+            content = content.text || content.output || content.content || content.response || JSON.stringify(content);
+        }
+
         const msg = {
             role: role,
-            content: content,
+            content: String(content || ''),
             timestamp: Date.now()
         };
         messages.push(msg);
@@ -268,12 +273,29 @@
             })
             .then(function (data) {
                 hideTyping();
-                const response = data.response || data.output || data.text || 'Nessuna risposta ricevuta.';
-                addMessage('bot', response);
+
+                // 1. Handle n8n array response (take first item)
+                let responseData = Array.isArray(data) ? data[0] : data;
+
+                // 2. Extract response text using common keys
+                let responseText = responseData.response || responseData.output || responseData.text || '';
+
+                // 3. If responseText is still an object, dig deeper
+                if (typeof responseText === 'object' && responseText !== null) {
+                    responseText = responseText.text || responseText.output || responseText.content || JSON.stringify(responseText);
+                }
+
+                // 4. Default message if nothing found
+                if (!responseText && responseText !== 0) {
+                    responseText = 'Nessuna risposta ricevuta dal backend.';
+                }
+
+                addMessage('bot', responseText);
 
                 // Sync chatId if backend returned one
-                if (data.chatId && data.chatId !== chatId) {
-                    chatId = data.chatId;
+                const newChatId = responseData.chatId || responseData.sessionId;
+                if (newChatId && newChatId !== chatId) {
+                    chatId = newChatId;
                     saveToStorage();
                 }
             })
