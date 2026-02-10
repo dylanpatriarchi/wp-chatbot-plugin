@@ -155,37 +155,42 @@
 
 /* ─── Header ──────────────────────────────── */
 
+/* ─── Header ──────────────────────────────── */
+
 .rc-header {
-    background: linear-gradient(135deg, var(--rc-primary) 0%, var(--rc-secondary) 100%);
-    color: #fff;
-    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rc-border);
+    padding: 14px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
+    border-radius: var(--rc-radius) var(--rc-radius) 0 0;
 }
 
 .rc-header-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .rc-avatar {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .rc-avatar svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
+    color: var(--rc-primary);
 }
 
 .rc-avatar img {
@@ -199,47 +204,38 @@
     font-weight: 600;
     font-size: 16px;
     font-family: var(--rc-font);
-    letter-spacing: -0.2px;
+    color: #1A1A1A;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 
 .rc-subtitle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    opacity: 0.85;
-    font-weight: 400;
-}
-
-.rc-subtitle::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #34C759;
-    display: inline-block;
+    display: none;
+    /* Removed for cleaner look */
 }
 
 .rc-header-actions {
     display: flex;
-    gap: 4px;
+    gap: 2px;
 }
 
 .rc-header-btn {
-    background: rgba(255, 255, 255, 0.15);
+    background: transparent;
     border: none;
-    border-radius: 8px;
-    color: #fff;
-    padding: 6px;
+    border-radius: 50%;
+    color: #8E8E93;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 
 .rc-header-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.05);
+    color: #1A1A1A;
 }
 
 /* ─── Messages ────────────────────────────── */

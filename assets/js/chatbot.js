@@ -94,7 +94,6 @@
             '<div class="rc-avatar">' + avatarContent + '</div>' +
             '<div>' +
             '<span class="rc-title">' + escapeHtml(config.botName || 'RayoChat') + '</span>' +
-            '<span class="rc-subtitle">Online</span>' +
             '</div>' +
             '</div>' +
             '<div class="rc-header-actions">' +
