@@ -1,27 +1,26 @@
 /* =============================================
-   PixiNest Chatbot Widget — Styles
-   Premium glassmorphism design with smooth animations
+   RayoChat Widget — iMessage-Inspired Design
+   Premium chat UI with full color customization
    ============================================= */
 
 :root {
-    --pixinest-primary: #6C3CE1;
-    --pixinest-primary-dark: #5428c8;
-    --pixinest-primary-light: #a78bfa;
-    --pixinest-bg: #ffffff;
-    --pixinest-bg-secondary: #f4f3ff;
-    --pixinest-text: #1a1a2e;
-    --pixinest-text-light: #64748b;
-    --pixinest-border: rgba(108, 60, 225, 0.12);
-    --pixinest-shadow: 0 12px 48px rgba(108, 60, 225, 0.18);
-    --pixinest-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --pixinest-radius: 20px;
-    --pixinest-radius-sm: 14px;
-    --pixinest-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --rc-primary: #6C3CE1;
+    --rc-secondary: #5A2DC5;
+    --rc-user-bubble: #6C3CE1;
+    --rc-user-text: #FFFFFF;
+    --rc-bot-bubble: #F0F0F0;
+    --rc-bot-text: #1A1A1A;
+    --rc-bg: #FFFFFF;
+    --rc-bg-secondary: #F8F9FA;
+    --rc-border: #E8E8E8;
+    --rc-text-light: #8E8E93;
+    --rc-radius: 22px;
+    --rc-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* ─── FAB (Floating Action Button) ────────── */
 
-.pixinest-fab {
+.rc-fab {
     position: fixed;
     bottom: 24px;
     right: 24px;
@@ -29,51 +28,60 @@
     height: 60px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, var(--pixinest-primary) 0%, var(--pixinest-primary-dark) 100%);
+    background: linear-gradient(135deg, var(--rc-primary) 0%, var(--rc-secondary) 100%);
     color: #fff;
     cursor: pointer;
-    box-shadow: 0 6px 24px rgba(108, 60, 225, 0.4);
-    z-index: 999998;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-    animation: pixinest-fab-entrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    animation-delay: 0.5s;
+    animation: rc-fab-entrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    overflow: hidden;
 }
 
-.pixinest-fab:hover {
+.rc-fab:hover {
     transform: scale(1.08);
-    box-shadow: 0 8px 32px rgba(108, 60, 225, 0.5);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.2), 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
-.pixinest-fab:active {
+.rc-fab:active {
     transform: scale(0.95);
 }
 
-.pixinest-fab-icon {
+.rc-fab-icon {
     width: 28px;
     height: 28px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: opacity 0.2s, transform 0.3s;
 }
 
-.pixinest-fab-icon--close {
+.rc-fab-icon--close {
     position: absolute;
     opacity: 0;
     transform: rotate(-90deg) scale(0.5);
 }
 
-.pixinest-open .pixinest-fab-icon--chat {
+.rc-open .rc-fab .rc-fab-icon--chat,
+.rc-open .rc-fab .rc-fab-img {
     opacity: 0;
     transform: rotate(90deg) scale(0.5);
 }
 
-.pixinest-open .pixinest-fab-icon--close {
+.rc-open .rc-fab .rc-fab-icon--close {
     opacity: 1;
     transform: rotate(0) scale(1);
 }
 
-@keyframes pixinest-fab-entrance {
+.rc-fab-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: opacity 0.2s, transform 0.3s;
+}
+
+@keyframes rc-fab-entrance {
     from {
         opacity: 0;
         transform: scale(0) translateY(20px);
@@ -86,24 +94,24 @@
 }
 
 /* Notification pulse */
-.pixinest-fab::after {
+.rc-fab::after {
     content: '';
     position: absolute;
     top: -3px;
     right: -3px;
-    width: 16px;
-    height: 16px;
-    background: #22c55e;
+    width: 14px;
+    height: 14px;
+    background: #34C759;
     border-radius: 50%;
-    border: 3px solid #fff;
-    animation: pixinest-pulse 2s infinite;
+    border: 2.5px solid #fff;
+    animation: rc-pulse 2s infinite;
 }
 
-.pixinest-open .pixinest-fab::after {
+.rc-open .rc-fab::after {
     display: none;
 }
 
-@keyframes pixinest-pulse {
+@keyframes rc-pulse {
 
     0%,
     100% {
@@ -112,35 +120,34 @@
     }
 
     50% {
-        transform: scale(1.2);
-        opacity: 0.7;
+        transform: scale(1.15);
+        opacity: 0.8;
     }
 }
 
 /* ─── Chat Window ─────────────────────────── */
 
-.pixinest-chat-window {
+.rc-window {
     position: fixed;
     bottom: 100px;
     right: 24px;
-    width: 400px;
-    height: 580px;
+    width: 380px;
+    height: 560px;
     max-height: calc(100vh - 140px);
-    background: var(--pixinest-bg);
-    border-radius: var(--pixinest-radius);
-    box-shadow: var(--pixinest-shadow);
-    border: 1px solid var(--pixinest-border);
+    background: var(--rc-bg);
+    border-radius: var(--rc-radius);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    z-index: 999999;
+    z-index: 99998;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px) scale(0.95);
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.3s;
+    transform: translateY(16px) scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.3s ease;
 }
 
-.pixinest-open .pixinest-chat-window {
+.rc-open .rc-window {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
@@ -148,71 +155,77 @@
 
 /* ─── Header ──────────────────────────────── */
 
-.pixinest-chat-header {
-    background: linear-gradient(135deg, var(--pixinest-primary) 0%, var(--pixinest-primary-dark) 100%);
+.rc-header {
+    background: linear-gradient(135deg, var(--rc-primary) 0%, var(--rc-secondary) 100%);
     color: #fff;
-    padding: 16px 20px;
+    padding: 16px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
 }
 
-.pixinest-chat-header-info {
+.rc-header-info {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.pixinest-avatar {
-    width: 40px;
-    height: 40px;
+.rc-avatar {
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    backdrop-filter: blur(4px);
+    overflow: hidden;
 }
 
-.pixinest-avatar svg {
+.rc-avatar svg {
     width: 22px;
     height: 22px;
 }
 
-.pixinest-chat-title {
-    display: block;
-    font-family: var(--pixinest-font);
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: -0.01em;
+.rc-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.pixinest-chat-subtitle {
+.rc-title {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: var(--rc-font);
+    letter-spacing: -0.2px;
+}
+
+.rc-subtitle {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-size: 12px;
     opacity: 0.85;
     font-weight: 400;
 }
 
-.pixinest-chat-subtitle::before {
+.rc-subtitle::before {
     content: '';
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #22c55e;
+    background: #34C759;
     display: inline-block;
 }
 
-.pixinest-chat-header-actions {
+.rc-header-actions {
     display: flex;
     gap: 4px;
 }
 
-.pixinest-header-btn {
+.rc-header-btn {
     background: rgba(255, 255, 255, 0.15);
     border: none;
     border-radius: 8px;
@@ -225,53 +238,47 @@
     transition: background 0.2s;
 }
 
-.pixinest-header-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+.rc-header-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
-/* ─── Messages Area ───────────────────────── */
+/* ─── Messages ────────────────────────────── */
 
-.pixinest-chat-messages {
+.rc-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 16px 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: var(--pixinest-bg-secondary);
+    gap: 4px;
+    background: var(--rc-bg);
     scroll-behavior: smooth;
 }
 
-.pixinest-chat-messages::-webkit-scrollbar {
-    width: 5px;
+.rc-messages::-webkit-scrollbar {
+    width: 4px;
 }
 
-.pixinest-chat-messages::-webkit-scrollbar-track {
-    background: transparent;
+.rc-messages::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
 }
 
-.pixinest-chat-messages::-webkit-scrollbar-thumb {
-    background: rgba(108, 60, 225, 0.2);
-    border-radius: 10px;
-}
-
-/* ─── Message Bubbles ─────────────────────── */
-
-.pixinest-msg {
+.rc-msg {
     display: flex;
     flex-direction: column;
-    max-width: 82%;
-    animation: pixinest-msg-in 0.3s ease both;
+    max-width: 78%;
+    animation: rc-msg-in 0.3s ease both;
 }
 
-.pixinest-msg--new {
-    animation: pixinest-msg-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.rc-msg--new {
+    animation: rc-msg-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-@keyframes pixinest-msg-in {
+@keyframes rc-msg-in {
     from {
         opacity: 0;
-        transform: translateY(10px) scale(0.97);
+        transform: translateY(8px) scale(0.97);
     }
 
     to {
@@ -280,90 +287,132 @@
     }
 }
 
-.pixinest-msg--user {
+/* User messages — right, like iMessage */
+.rc-msg--user {
     align-self: flex-end;
-    align-items: flex-end;
 }
 
-.pixinest-msg--bot {
-    align-self: flex-start;
-    align-items: flex-start;
-}
-
-.pixinest-msg-bubble {
-    padding: 12px 16px;
-    font-family: var(--pixinest-font);
-    font-size: 14px;
-    line-height: 1.55;
+.rc-msg--user .rc-bubble {
+    background: var(--rc-user-bubble);
+    color: var(--rc-user-text);
+    border-radius: 20px 20px 6px 20px;
+    padding: 10px 14px;
+    font-size: 15px;
+    line-height: 1.45;
+    font-family: var(--rc-font);
     word-wrap: break-word;
-    overflow-wrap: break-word;
+    position: relative;
 }
 
-.pixinest-msg--user .pixinest-msg-bubble {
-    background: linear-gradient(135deg, var(--pixinest-primary) 0%, var(--pixinest-primary-dark) 100%);
-    color: #fff;
-    border-radius: var(--pixinest-radius-sm) var(--pixinest-radius-sm) 6px var(--pixinest-radius-sm);
-    box-shadow: 0 2px 8px rgba(108, 60, 225, 0.25);
-}
-
-.pixinest-msg--bot .pixinest-msg-bubble {
-    background: var(--pixinest-bg);
-    color: var(--pixinest-text);
-    border-radius: var(--pixinest-radius-sm) var(--pixinest-radius-sm) var(--pixinest-radius-sm) 6px;
-    box-shadow: var(--pixinest-shadow-sm);
-    border: 1px solid var(--pixinest-border);
-}
-
-.pixinest-msg-bubble code {
-    background: rgba(108, 60, 225, 0.08);
-    padding: 2px 6px;
+.rc-msg--user .rc-bubble code {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1px 5px;
     border-radius: 4px;
     font-size: 13px;
     font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
 }
 
-.pixinest-msg--user .pixinest-msg-bubble code {
-    background: rgba(255, 255, 255, 0.2);
+/* Bot messages — left, like iMessage */
+.rc-msg--bot {
+    align-self: flex-start;
 }
 
-.pixinest-msg-time {
+.rc-msg--bot .rc-bubble {
+    background: var(--rc-bot-bubble);
+    color: var(--rc-bot-text);
+    border-radius: 20px 20px 20px 6px;
+    padding: 10px 14px;
+    font-size: 15px;
+    line-height: 1.45;
+    font-family: var(--rc-font);
+    word-wrap: break-word;
+    position: relative;
+}
+
+.rc-msg--bot .rc-bubble code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* Message grouping — consecutive same sender */
+.rc-msg--user+.rc-msg--user {
+    margin-top: -2px;
+}
+
+.rc-msg--user+.rc-msg--user .rc-bubble {
+    border-radius: 20px 6px 6px 20px;
+}
+
+.rc-msg--bot+.rc-msg--bot {
+    margin-top: -2px;
+}
+
+.rc-msg--bot+.rc-msg--bot .rc-bubble {
+    border-radius: 6px 20px 20px 6px;
+}
+
+/* Message formatting */
+.rc-bubble strong {
+    font-weight: 600;
+}
+
+.rc-bubble em {
+    font-style: italic;
+}
+
+.rc-bubble ul,
+.rc-bubble ol {
+    margin: 4px 0;
+    padding-left: 18px;
+}
+
+.rc-bubble li {
+    margin-bottom: 2px;
+}
+
+/* Timestamp */
+.rc-msg-time {
     font-size: 11px;
-    color: var(--pixinest-text-light);
-    margin-top: 4px;
+    color: var(--rc-text-light);
+    margin-top: 3px;
     padding: 0 4px;
-    font-family: var(--pixinest-font);
+    font-family: var(--rc-font);
+}
+
+.rc-msg--user .rc-msg-time {
+    text-align: right;
 }
 
 /* ─── Typing Indicator ────────────────────── */
 
-.pixinest-typing {
+.rc-typing {
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 14px 20px !important;
+    gap: 4px;
+    padding: 12px 16px;
+    min-width: 52px;
 }
 
-.pixinest-dot {
+.rc-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--pixinest-primary-light);
-    animation: pixinest-bounce 1.4s infinite ease-in-out both;
+    background: var(--rc-text-light);
+    animation: rc-bounce 1.4s infinite both;
 }
 
-.pixinest-dot:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.pixinest-dot:nth-child(2) {
+.rc-dot:nth-child(2) {
     animation-delay: 0.16s;
 }
 
-.pixinest-dot:nth-child(3) {
+.rc-dot:nth-child(3) {
     animation-delay: 0.32s;
 }
 
-@keyframes pixinest-bounce {
+@keyframes rc-bounce {
 
     0%,
     80%,
@@ -380,129 +429,136 @@
 
 /* ─── Input Area ──────────────────────────── */
 
-.pixinest-chat-input-area {
-    padding: 12px 16px;
-    background: var(--pixinest-bg);
-    border-top: 1px solid var(--pixinest-border);
+.rc-input-area {
+    padding: 10px 14px;
+    background: var(--rc-bg);
+    border-top: 1px solid var(--rc-border);
     flex-shrink: 0;
 }
 
-.pixinest-input-wrapper {
+.rc-input-wrapper {
     display: flex;
     align-items: flex-end;
     gap: 8px;
-    background: var(--pixinest-bg-secondary);
-    border: 1px solid var(--pixinest-border);
-    border-radius: 16px;
+    background: var(--rc-bg-secondary);
+    border: 1px solid var(--rc-border);
+    border-radius: 22px;
     padding: 6px 6px 6px 16px;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.pixinest-input-wrapper:focus-within {
-    border-color: var(--pixinest-primary);
+.rc-input-wrapper:focus-within {
+    border-color: var(--rc-primary);
     box-shadow: 0 0 0 3px rgba(108, 60, 225, 0.1);
 }
 
-#pixinest-input {
+.rc-input-wrapper textarea {
     flex: 1;
     border: none;
-    outline: none;
-    background: transparent;
-    font-family: var(--pixinest-font);
-    font-size: 14px;
-    color: var(--pixinest-text);
+    background: none;
     resize: none;
+    outline: none;
+    font-size: 15px;
+    line-height: 1.4;
     max-height: 120px;
-    line-height: 1.5;
     padding: 6px 0;
+    font-family: var(--rc-font);
+    color: #1A1A1A;
 }
 
-#pixinest-input::placeholder {
-    color: var(--pixinest-text-light);
+.rc-input-wrapper textarea::placeholder {
+    color: var(--rc-text-light);
 }
 
-.pixinest-send-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
+.rc-send-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, var(--pixinest-primary) 0%, var(--pixinest-primary-dark) 100%);
+    background: var(--rc-primary);
     color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: transform 0.15s, opacity 0.2s;
+    transition: transform 0.15s, opacity 0.15s;
 }
 
-.pixinest-send-btn:disabled {
-    opacity: 0.4;
+.rc-send-btn:disabled {
+    opacity: 0.35;
     cursor: default;
     transform: none;
 }
 
-.pixinest-send-btn:not(:disabled):hover {
+.rc-send-btn:not(:disabled):hover {
     transform: scale(1.08);
 }
 
-.pixinest-send-btn:not(:disabled):active {
+.rc-send-btn:not(:disabled):active {
     transform: scale(0.92);
 }
 
-.pixinest-send-btn svg {
+.rc-send-btn svg {
     width: 18px;
     height: 18px;
 }
 
-.pixinest-powered-by {
+/* ─── Footer ──────────────────────────────── */
+
+.rc-powered-by {
     text-align: center;
     font-size: 10px;
-    color: var(--pixinest-text-light);
-    margin-top: 8px;
+    color: var(--rc-text-light);
+    margin-top: 6px;
     opacity: 0.6;
-    font-family: var(--pixinest-font);
+    font-family: var(--rc-font);
 }
 
-/* ─── Mobile Responsive ───────────────────── */
+.rc-powered-by a {
+    color: var(--rc-text-light);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.rc-powered-by a:hover {
+    color: var(--rc-primary);
+    text-decoration: underline;
+}
+
+.rc-powered-by--hidden {
+    display: none;
+}
+
+/* ─── Responsive ──────────────────────────── */
 
 @media (max-width: 480px) {
-    .pixinest-chat-window {
-        bottom: 0;
-        right: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        max-height: 100vh;
-        border-radius: 0;
+    .rc-window {
+        width: calc(100vw - 16px);
+        height: calc(100vh - 90px);
+        max-height: none;
+        bottom: 78px;
+        right: 8px;
+        border-radius: 18px;
     }
 
-    .pixinest-fab {
+    .rc-fab {
         bottom: 16px;
         right: 16px;
         width: 54px;
         height: 54px;
     }
-
-    .pixinest-fab-icon {
-        width: 24px;
-        height: 24px;
-    }
-
-    .pixinest-open .pixinest-fab {
-        display: none;
-    }
 }
 
-/* ─── High contrast / reduced motion ─────── */
+/* ─── Reduced Motion ──────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
 
-    .pixinest-fab,
-    .pixinest-chat-window,
-    .pixinest-msg,
-    .pixinest-msg--new,
-    .pixinest-dot {
+    .rc-fab,
+    .rc-window,
+    .rc-msg,
+    .rc-msg--new,
+    .rc-dot {
         animation: none !important;
         transition: opacity 0.15s !important;
     }

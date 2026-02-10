@@ -1,26 +1,27 @@
 <?php
 /**
- * Plugin Name: PixiNest Chatbot
- * Plugin URI: https://pixinest.com
- * Description: AI Chatbot widget powered by n8n backend with localStorage persistence and dynamic system prompt management.
+ * Plugin Name: RayoChat
+ * Plugin URI: https://www.rayo.consulting
+ * Description: AI Chatbot widget powered by n8n backend with localStorage persistence, full color customization, and dynamic system prompt management.
  * Version: 1.0.0
- * Author: PixiNest
+ * Author: Rayo Consulting
+ * Author URI: https://www.rayo.consulting
  * License: GPL v2 or later
- * Text Domain: pixinest-chatbot
+ * Text Domain: rayochat
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PIXINEST_CHATBOT_VERSION', '1.0.0');
-define('PIXINEST_CHATBOT_PATH', plugin_dir_path(__FILE__));
-define('PIXINEST_CHATBOT_URL', plugin_dir_url(__FILE__));
+define('RAYOCHAT_VERSION', '1.0.0');
+define('RAYOCHAT_PATH', plugin_dir_path(__FILE__));
+define('RAYOCHAT_URL', plugin_dir_url(__FILE__));
 
 /**
  * Main plugin class
  */
-class PixiNest_Chatbot
+class RayoChat
 {
 
     private static $instance = null;
@@ -40,9 +41,9 @@ class PixiNest_Chatbot
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
         add_action('rest_api_init', [$this, 'register_rest_routes']);
-        add_action('wp_ajax_pixinest_update_system_prompt', [$this, 'ajax_update_system_prompt']);
-        add_action('wp_ajax_pixinest_fetch_system_prompt', [$this, 'ajax_fetch_system_prompt']);
-        add_action('wp_ajax_pixinest_test_connection', [$this, 'ajax_test_connection']);
+        add_action('wp_ajax_rayochat_update_system_prompt', [$this, 'ajax_update_system_prompt']);
+        add_action('wp_ajax_rayochat_fetch_system_prompt', [$this, 'ajax_fetch_system_prompt']);
+        add_action('wp_ajax_rayochat_test_connection', [$this, 'ajax_test_connection']);
         add_action('wp_footer', [$this, 'render_chatbot_widget']);
     }
 
@@ -52,10 +53,10 @@ class PixiNest_Chatbot
     public function register_admin_menu()
     {
         add_menu_page(
-            __('PixiNest Chatbot', 'pixinest-chatbot'),
-            __('PixiNest Chat', 'pixinest-chatbot'),
+            __('RayoChat', 'rayochat'),
+            __('RayoChat', 'rayochat'),
             'manage_options',
-            'pixinest-chatbot',
+            'rayochat',
             [$this, 'render_settings_page'],
             'dashicons-format-chat',
             80
@@ -67,44 +68,87 @@ class PixiNest_Chatbot
      */
     public function register_settings()
     {
-        register_setting('pixinest_chatbot_settings', 'pixinest_webhook_url', [
+        // Connection
+        register_setting('rayochat_settings', 'rayochat_webhook_url', [
             'type' => 'string',
             'sanitize_callback' => 'esc_url_raw',
             'default' => '',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_auth_username', [
+        register_setting('rayochat_settings', 'rayochat_auth_username', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => '',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_auth_password', [
+        register_setting('rayochat_settings', 'rayochat_auth_password', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => '',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_system_prompt', [
+        register_setting('rayochat_settings', 'rayochat_system_prompt', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_textarea_field',
             'default' => '',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_bot_name', [
+
+        // Appearance — basic
+        register_setting('rayochat_settings', 'rayochat_bot_name', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default' => 'PixiNest',
+            'default' => 'RayoChat',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_welcome_message', [
+        register_setting('rayochat_settings', 'rayochat_welcome_message', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_textarea_field',
             'default' => 'Ciao! Come posso aiutarti? 👋',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_primary_color', [
+        register_setting('rayochat_settings', 'rayochat_chat_enabled', [
+            'type' => 'boolean',
+            'default' => true,
+        ]);
+
+        // Colors
+        register_setting('rayochat_settings', 'rayochat_primary_color', [
             'type' => 'string',
             'sanitize_callback' => 'sanitize_hex_color',
             'default' => '#6C3CE1',
         ]);
-        register_setting('pixinest_chatbot_settings', 'pixinest_chat_enabled', [
+        register_setting('rayochat_settings', 'rayochat_secondary_color', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default' => '#5A2DC5',
+        ]);
+        register_setting('rayochat_settings', 'rayochat_user_bubble_color', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default' => '#6C3CE1',
+        ]);
+        register_setting('rayochat_settings', 'rayochat_user_text_color', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default' => '#FFFFFF',
+        ]);
+        register_setting('rayochat_settings', 'rayochat_bot_bubble_color', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default' => '#F0F0F0',
+        ]);
+        register_setting('rayochat_settings', 'rayochat_bot_text_color', [
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'default' => '#1A1A1A',
+        ]);
+
+        // Custom icon
+        register_setting('rayochat_settings', 'rayochat_fab_icon', [
+            'type' => 'integer',
+            'sanitize_callback' => 'absint',
+            'default' => 0,
+        ]);
+
+        // Footer
+        register_setting('rayochat_settings', 'rayochat_hide_powered_by', [
             'type' => 'boolean',
-            'default' => true,
+            'default' => false,
         ]);
     }
 
@@ -113,25 +157,29 @@ class PixiNest_Chatbot
      */
     public function enqueue_admin_assets($hook)
     {
-        if ($hook !== 'toplevel_page_pixinest-chatbot') {
+        if ($hook !== 'toplevel_page_rayochat') {
             return;
         }
+
+        // WP Media uploader
+        wp_enqueue_media();
+
         wp_enqueue_style(
-            'pixinest-admin-css',
-            PIXINEST_CHATBOT_URL . 'assets/css/admin.css',
+            'rayochat-admin-css',
+            RAYOCHAT_URL . 'assets/css/admin.css',
             [],
-            PIXINEST_CHATBOT_VERSION
+            RAYOCHAT_VERSION
         );
         wp_enqueue_script(
-            'pixinest-admin-js',
-            PIXINEST_CHATBOT_URL . 'assets/js/admin.js',
+            'rayochat-admin-js',
+            RAYOCHAT_URL . 'assets/js/admin.js',
             ['jquery'],
-            PIXINEST_CHATBOT_VERSION,
+            RAYOCHAT_VERSION,
             true
         );
-        wp_localize_script('pixinest-admin-js', 'pixinestAdmin', [
+        wp_localize_script('rayochat-admin-js', 'rayochatAdmin', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('pixinest_admin_nonce'),
+            'nonce' => wp_create_nonce('rayochat_admin_nonce'),
         ]);
     }
 
@@ -140,41 +188,66 @@ class PixiNest_Chatbot
      */
     public function enqueue_frontend_assets()
     {
-        if (!get_option('pixinest_chat_enabled', true)) {
+        if (!get_option('rayochat_chat_enabled', true)) {
             return;
         }
 
-        $webhook_url = get_option('pixinest_webhook_url', '');
+        $webhook_url = get_option('rayochat_webhook_url', '');
         if (empty($webhook_url)) {
             return;
         }
 
         wp_enqueue_style(
-            'pixinest-chatbot-css',
-            PIXINEST_CHATBOT_URL . 'assets/css/chatbot.css',
+            'rayochat-css',
+            RAYOCHAT_URL . 'assets/css/chatbot.css',
             [],
-            PIXINEST_CHATBOT_VERSION
+            RAYOCHAT_VERSION
         );
         wp_enqueue_script(
-            'pixinest-chatbot-js',
-            PIXINEST_CHATBOT_URL . 'assets/js/chatbot.js',
+            'rayochat-js',
+            RAYOCHAT_URL . 'assets/js/chatbot.js',
             [],
-            PIXINEST_CHATBOT_VERSION,
+            RAYOCHAT_VERSION,
             true
         );
 
-        $primary_color = get_option('pixinest_primary_color', '#6C3CE1');
+        // Colors
+        $primary = get_option('rayochat_primary_color', '#6C3CE1');
+        $secondary = get_option('rayochat_secondary_color', '#5A2DC5');
+        $userBubble = get_option('rayochat_user_bubble_color', '#6C3CE1');
+        $userText = get_option('rayochat_user_text_color', '#FFFFFF');
+        $botBubble = get_option('rayochat_bot_bubble_color', '#F0F0F0');
+        $botText = get_option('rayochat_bot_text_color', '#1A1A1A');
 
-        wp_localize_script('pixinest-chatbot-js', 'pixinestConfig', [
-            'proxyUrl' => rest_url('pixinest/v1/chat'),
+        // Custom icon
+        $fab_icon_id = (int) get_option('rayochat_fab_icon', 0);
+        $fab_icon_url = $fab_icon_id ? wp_get_attachment_url($fab_icon_id) : '';
+
+        wp_localize_script('rayochat-js', 'rayochatConfig', [
+            'proxyUrl' => rest_url('rayochat/v1/chat'),
             'nonce' => wp_create_nonce('wp_rest'),
-            'botName' => get_option('pixinest_bot_name', 'PixiNest'),
-            'welcomeMessage' => get_option('pixinest_welcome_message', 'Ciao! Come posso aiutarti? 👋'),
-            'primaryColor' => $primary_color,
+            'botName' => get_option('rayochat_bot_name', 'RayoChat'),
+            'welcomeMessage' => get_option('rayochat_welcome_message', 'Ciao! Come posso aiutarti? 👋'),
+            'primaryColor' => $primary,
+            'secondaryColor' => $secondary,
+            'userBubbleColor' => $userBubble,
+            'userTextColor' => $userText,
+            'botBubbleColor' => $botBubble,
+            'botTextColor' => $botText,
+            'fabIcon' => $fab_icon_url,
+            'hidePoweredBy' => (bool) get_option('rayochat_hide_powered_by', false),
         ]);
 
-        // Inject CSS variable for primary color
-        wp_add_inline_style('pixinest-chatbot-css', ":root { --pixinest-primary: {$primary_color}; }");
+        // Inject CSS variables
+        $css = ":root {
+            --rc-primary: {$primary};
+            --rc-secondary: {$secondary};
+            --rc-user-bubble: {$userBubble};
+            --rc-user-text: {$userText};
+            --rc-bot-bubble: {$botBubble};
+            --rc-bot-text: {$botText};
+        }";
+        wp_add_inline_style('rayochat-css', $css);
     }
 
     /**
@@ -182,7 +255,7 @@ class PixiNest_Chatbot
      */
     public function register_rest_routes()
     {
-        register_rest_route('pixinest/v1', '/chat', [
+        register_rest_route('rayochat/v1', '/chat', [
             'methods' => 'POST',
             'callback' => [$this, 'rest_chat_proxy'],
             'permission_callback' => '__return_true',
@@ -194,9 +267,9 @@ class PixiNest_Chatbot
      */
     public function rest_chat_proxy($request)
     {
-        $webhook_url = get_option('pixinest_webhook_url', '');
-        $username = get_option('pixinest_auth_username', '');
-        $password = get_option('pixinest_auth_password', '');
+        $webhook_url = get_option('rayochat_webhook_url', '');
+        $username = get_option('rayochat_auth_username', '');
+        $password = get_option('rayochat_auth_password', '');
 
         if (empty($webhook_url)) {
             return new \WP_Error('not_configured', 'Chatbot non configurato.', ['status' => 503]);
@@ -241,7 +314,7 @@ class PixiNest_Chatbot
      */
     public function render_settings_page()
     {
-        require_once PIXINEST_CHATBOT_PATH . 'admin/settings-page.php';
+        require_once RAYOCHAT_PATH . 'admin/settings-page.php';
     }
 
     /**
@@ -249,13 +322,13 @@ class PixiNest_Chatbot
      */
     public function render_chatbot_widget()
     {
-        if (!get_option('pixinest_chat_enabled', true)) {
+        if (!get_option('rayochat_chat_enabled', true)) {
             return;
         }
-        if (empty(get_option('pixinest_webhook_url', ''))) {
+        if (empty(get_option('rayochat_webhook_url', ''))) {
             return;
         }
-        echo '<div id="pixinest-chatbot-root"></div>';
+        echo '<div id="rc-root"></div>';
     }
 
     /**
@@ -263,22 +336,21 @@ class PixiNest_Chatbot
      */
     public function ajax_update_system_prompt()
     {
-        check_ajax_referer('pixinest_admin_nonce', 'nonce');
+        check_ajax_referer('rayochat_admin_nonce', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized'], 403);
         }
 
-        $webhook_url = get_option('pixinest_webhook_url', '');
-        $username = get_option('pixinest_auth_username', '');
-        $password = get_option('pixinest_auth_password', '');
+        $webhook_url = get_option('rayochat_webhook_url', '');
+        $username = get_option('rayochat_auth_username', '');
+        $password = get_option('rayochat_auth_password', '');
         $prompt = sanitize_textarea_field($_POST['system_prompt'] ?? '');
 
         if (empty($webhook_url) || empty($prompt)) {
             wp_send_json_error(['message' => 'URL webhook o system prompt mancante.']);
         }
 
-        // Build the system prompt endpoint URL
         $prompt_url = trailingslashit(dirname($webhook_url)) . 'pixinest/system-prompt';
 
         $response = wp_remote_post($prompt_url, [
@@ -298,8 +370,7 @@ class PixiNest_Chatbot
         $body = json_decode(wp_remote_retrieve_body($response), true);
 
         if ($code === 200 && !empty($body['success'])) {
-            // Also save locally
-            update_option('pixinest_system_prompt', $prompt);
+            update_option('rayochat_system_prompt', $prompt);
             wp_send_json_success(['message' => 'System prompt aggiornato con successo!', 'data' => $body]);
         } else {
             wp_send_json_error([
@@ -314,7 +385,7 @@ class PixiNest_Chatbot
      */
     public function ajax_test_connection()
     {
-        check_ajax_referer('pixinest_admin_nonce', 'nonce');
+        check_ajax_referer('rayochat_admin_nonce', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized'], 403);
@@ -359,21 +430,20 @@ class PixiNest_Chatbot
      */
     public function ajax_fetch_system_prompt()
     {
-        check_ajax_referer('pixinest_admin_nonce', 'nonce');
+        check_ajax_referer('rayochat_admin_nonce', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error(['message' => 'Unauthorized'], 403);
         }
 
-        $webhook_url = get_option('pixinest_webhook_url', '');
-        $username = get_option('pixinest_auth_username', '');
-        $password = get_option('pixinest_auth_password', '');
+        $webhook_url = get_option('rayochat_webhook_url', '');
+        $username = get_option('rayochat_auth_username', '');
+        $password = get_option('rayochat_auth_password', '');
 
         if (empty($webhook_url)) {
             wp_send_json_error(['message' => 'URL webhook non configurato.']);
         }
 
-        // Build the GET system prompt endpoint URL
         $prompt_url = trailingslashit(dirname($webhook_url)) . 'pixinest/system-prompt';
 
         $response = wp_remote_get($prompt_url, [
@@ -391,9 +461,8 @@ class PixiNest_Chatbot
         $body = json_decode(wp_remote_retrieve_body($response), true);
 
         if ($code === 200 && !empty($body['success'])) {
-            // Also update local copy
             if (!empty($body['systemPrompt'])) {
-                update_option('pixinest_system_prompt', $body['systemPrompt']);
+                update_option('rayochat_system_prompt', $body['systemPrompt']);
             }
             wp_send_json_success([
                 'message' => 'System prompt caricato dal backend.',
@@ -410,4 +479,4 @@ class PixiNest_Chatbot
 }
 
 // Initialize plugin
-PixiNest_Chatbot::get_instance();
+RayoChat::get_instance();
