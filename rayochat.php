@@ -2,7 +2,7 @@
 /**
  * Plugin Name: RayoChat
  * Plugin URI: https://www.rayo.consulting
- * Description: AI Chatbot widget powered by n8n backend with localStorage persistence, full color customization, and dynamic system prompt management.
+ * Description: AI Chatbot widget powered by backend with localStorage persistence, full color customization, and dynamic system prompt management.
  * Version: 1.0.0
  * Author: Rayo Consulting
  * Author URI: https://www.rayo.consulting
@@ -263,7 +263,7 @@ class RayoChat
     }
 
     /**
-     * REST API: Proxy chat requests to n8n (avoids CORS, hides credentials)
+     * REST API: Proxy chat requests (avoids CORS, hides credentials)
      */
     public function rest_chat_proxy($request)
     {
@@ -332,7 +332,7 @@ class RayoChat
     }
 
     /**
-     * AJAX: Update system prompt on n8n backend
+     * AJAX: Update system prompt on backend
      */
     public function ajax_update_system_prompt()
     {
@@ -381,7 +381,7 @@ class RayoChat
     }
 
     /**
-     * AJAX: Test connection to n8n webhook
+     * AJAX: Test connection to webhook
      */
     public function ajax_test_connection()
     {
@@ -426,7 +426,7 @@ class RayoChat
     }
 
     /**
-     * AJAX: Fetch current system prompt from n8n backend (GET)
+     * AJAX: Fetch current system prompt from backend (GET)
      */
     public function ajax_fetch_system_prompt()
     {

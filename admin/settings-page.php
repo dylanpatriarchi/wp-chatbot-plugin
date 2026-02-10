@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
             <?php esc_html_e('RayoChat', 'rayochat'); ?>
         </h1>
         <p class="description">
-            <?php esc_html_e('Configura il chatbot AI e la connessione al backend n8n.', 'rayochat'); ?>
+            <?php esc_html_e('Configura il chatbot AI e la connessione al Server.', 'rayochat'); ?>
         </p>
     </div>
 
@@ -34,9 +34,9 @@ if (!defined('ABSPATH')) {
                     <td>
                         <input type="url" id="rayochat_webhook_url" name="rayochat_webhook_url"
                             value="<?php echo esc_attr(get_option('rayochat_webhook_url', '')); ?>" class="regular-text"
-                            placeholder="https://n8n.example.com/webhook/pixinest" />
+                            placeholder="https://url.example.com/webhook/pixinest" />
                         <p class="description">
-                            <?php esc_html_e('URL completo del webhook n8n per la chat (POST).', 'rayochat'); ?>
+                            <?php esc_html_e('URL completo del webhook per la chat.', 'rayochat'); ?>
                         </p>
                     </td>
                 </tr>

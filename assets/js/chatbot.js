@@ -1,6 +1,6 @@
 /**
  * RayoChat Widget
- * iMessage-inspired frontend chat with localStorage persistence and n8n proxy
+ * iMessage-inspired frontend chat with localStorage persistence and proxy
  */
 (function () {
     'use strict';
@@ -260,7 +260,7 @@
             .then(function (data) {
                 hideTyping();
 
-                // Handle n8n array response
+                // Handle array response
                 var responseData = Array.isArray(data) ? data[0] : data;
 
                 // Extract response text
