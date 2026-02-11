@@ -175,16 +175,17 @@
         var viewportHeight = window.visualViewport.height;
         var offsetTop = window.visualViewport.offsetTop;
 
-        // On iOS, offsetTop might handle the scroll position
-        // We set the window height to the visible area
+        // Force position to match the visual viewport exactly
+        // This prevents the "slide up" effect where the window goes off-screen
         windowEl.style.height = viewportHeight + 'px';
+        windowEl.style.top = offsetTop + 'px';
+        windowEl.style.bottom = 'auto'; // Disable CSS bottom positioning
 
-        // Ensure it sticks to the bottom of the visual viewport
-        // (Sometimes needed if the viewport is scrolled up)
-        // windowEl.style.bottom = '0px'; 
+        // Ensure standard CSS doesn't fight back
+        windowEl.style.position = 'fixed';
 
         // Scroll messages to bottom to keep context visible
-        setTimeout(scrollToBottom, 100);
+        setTimeout(scrollToBottom, 50);
     }
 
     // ─── Chat Toggle ───────────────────────────────────

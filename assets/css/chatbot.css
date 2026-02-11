@@ -557,6 +557,11 @@
         padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
         /* Handle home indicator */
     }
+
+    /* Prevent auto-zoom on iOS by enforcing 16px font size */
+    .rc-input-wrapper textarea {
+        font-size: 16px !important;
+    }
 }
 
 /* ─── Reduced Motion ──────────────────────── */
