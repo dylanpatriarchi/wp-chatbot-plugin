@@ -146,6 +146,45 @@
         });
 
         sendBtn.addEventListener('click', sendMessage);
+
+        // Visual Viewport handling for mobile keyboard
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleViewportResize);
+            window.visualViewport.addEventListener('scroll', handleViewportResize);
+        }
+    }
+
+    // ─── Viewport Resize (Mobile Keyboard) ─────────────
+    function handleViewportResize() {
+        if (!isOpen) return;
+
+        // Only apply on mobile-ish screens
+        if (window.innerWidth > 480) {
+            var windowEl = document.getElementById('rc-window');
+            if (windowEl) {
+                windowEl.style.height = '';
+                windowEl.style.bottom = '';
+            }
+            return;
+        }
+
+        var windowEl = document.getElementById('rc-window');
+        if (!windowEl) return;
+
+        // Adjust height to match the visual viewport
+        var viewportHeight = window.visualViewport.height;
+        var offsetTop = window.visualViewport.offsetTop;
+
+        // On iOS, offsetTop might handle the scroll position
+        // We set the window height to the visible area
+        windowEl.style.height = viewportHeight + 'px';
+
+        // Ensure it sticks to the bottom of the visual viewport
+        // (Sometimes needed if the viewport is scrolled up)
+        // windowEl.style.bottom = '0px'; 
+
+        // Scroll messages to bottom to keep context visible
+        setTimeout(scrollToBottom, 100);
     }
 
     // ─── Chat Toggle ───────────────────────────────────

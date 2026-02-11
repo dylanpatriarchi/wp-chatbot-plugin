@@ -530,19 +530,32 @@
 
 @media (max-width: 480px) {
     .rc-window {
-        width: calc(100vw - 16px);
-        height: calc(100vh - 90px);
+        width: 100%;
+        height: 100%;
         max-height: none;
-        bottom: 78px;
-        right: 8px;
-        border-radius: 18px;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        z-index: 100000;
+        /* Ensure on top of everything */
     }
 
-    .rc-fab {
-        bottom: 16px;
-        right: 16px;
-        width: 54px;
-        height: 54px;
+    /* Hide FAB when open on mobile to avoid covering content */
+    .rc-open .rc-fab {
+        display: none;
+    }
+
+    .rc-header {
+        border-radius: 0;
+        padding-top: env(safe-area-inset-top, 14px);
+        /* Handle notch */
+    }
+
+    .rc-input-area {
+        padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
+        /* Handle home indicator */
     }
 }
 
